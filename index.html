@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- BASIC META TAGS -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M-Pesa STK Push - Functional Payment Gateway</title>
+    <meta name="description" content="M-Pesa STK Push demo system — easily send payments directly from your phone via Safaricom M-Pesa API integration. Secure, fast, and functional payment gateway.">
+    <meta name="keywords" content="M-Pesa STK Push, M-Pesa API, Safaricom payment, Kenya payments, mobile money, payment gateway, Lipa na M-Pesa, Daraja API, STK push integration">
+    <meta name="author" content="Rodney Sigeyh">
+
+    <!-- OPEN GRAPH (For Facebook, WhatsApp, LinkedIn) -->
+    <meta property="og:title" content="M-Pesa STK Push - Secure Payment Gateway">
+    <meta property="og:description" content="A functional and user-friendly M-Pesa STK Push payment page. Instantly initiate secure payments directly from your phone.">
+    <meta property="og:image" content="https://yourdomain.com/images/mpesa-stk-cover.jpg"> <!-- Replace with your actual image -->
+    <meta property="og:url" content="https://yourdomain.com/mpesa-stk-push">
+    <meta property="og:type" content="website">
+
+    <!-- TWITTER CARD (For Twitter/X preview) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="M-Pesa STK Push - Secure Payment Gateway">
+    <meta name="twitter:description" content="A fully functional M-Pesa STK Push payment system. Easy to use and secure for instant transactions.">
+    <meta name="twitter:image" content="https://yourdomain.com/images/mpesa-stk-cover.jpg">
+
+    <!-- FAVICON -->
+    <link rel="icon" href="https://yourdomain.com/images/mpesa-icon.png" type="image/png">
+
+    <!-- CANONICAL URL -->
+    <link rel="canonical" href="https://yourdomain.com/mpesa-stk-push">
+
+    <!-- ROBOTS -->
+    <meta name="robots" content="index, follow">
+
+    <!-- THEME COLOR (For browsers and mobile) -->
+    <meta name="theme-color" content="#00a651">
+
+    <!-- STRUCTURED DATA (SCHEMA MARKUP) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "PaymentService",
+      "name": "M-Pesa STK Push",
+      "description": "A functional Safaricom M-Pesa STK Push system for secure and fast mobile payments.",
+      "provider": {
+        "@type": "Organization",
+        "name": "Safaricom PLC"
+      },
+      "areaServed": "Kenya",
+      "brand": "M-Pesa",
+      "url": "https://yourdomain.com/mpesa-stk-push",
+      "sameAs": [
+        "https://twitter.com/SafaricomPLC",
+        "https://www.facebook.com/SafaricomPLC"
+      ]
+    }
+    </script>
+
+    <!-- EXISTING STYLES -->
+    <style>
+        :root {
+            --primary-color: #00a651;
+            --secondary-color: #ffcc00;
+            --dark-color: #1a1a1a;
+            --light-color: #f8f9fa;
+            --danger-color: #dc3545;
+            --success-color: #28a745;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #008040);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            box-shadow: var(--box-shadow);
+        }
+        .payment-form {
+            background: white;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+        }
+        input:focus, select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        .btn {
+            background: var(--primary-color);
+            color: white;
+            padding: 14px 25px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+        }
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .alert {
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            display: none;
+        }
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>M-Pesa STK Push</h1>
+            <p>Functional Payment System</p>
+        </header>
+        
+        <div class="payment-form">
+            <h2>Make Payment</h2>
+            <div class="alert alert-success" id="successAlert"></div>
+            <div class="alert alert-danger" id="errorAlert"></div>
+            
+            <form id="paymentForm">
+                <div class="form-group">
+                    <label for="phoneNumber">Phone Number (254...)</label>
+                    <input type="tel" id="phoneNumber" placeholder="254712345678" required>
+                </div>
+                <div class="form-group">
+                    <label for="amount">Amount (KES)</label>
+                    <input type="number" id="amount" min="1" max="150000" placeholder="100" required>
+                </div>
+                <div class="form-group">
+                    <label for="accountReference">Reference</label>
+                    <input type="text" id="accountReference" placeholder="ORDER123" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn" id="submitBtn">
+                        Pay with M-Pesa
+                    </button>
+                </div>
+            </form>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Initiating payment...</p>
+            </div>
+            
+            <div id="result" style="display: none; margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                <h3>Payment Status</h3>
+                <p id="statusMessage"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('paymentForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const loading = document.getElementById('loading');
+            const successAlert = document.getElementById('successAlert');
+            const errorAlert = document.getElementById('errorAlert');
+            const resultDiv = document.getElementById('result');
+            const statusMessage = document.getElementById('statusMessage');
+            
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const amount = document.getElementById('amount').value;
+            const accountReference = document.getElementById('accountReference').value;
+            
+            submitBtn.disabled = true;
+            loading.style.display = 'block';
+            successAlert.style.display = 'none';
+            errorAlert.style.display = 'none';
+            resultDiv.style.display = 'none';
+            
+            try {
+                const response = await fetch('/api/stk-push', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        phoneNumber,
+                        amount,
+                        accountReference,
+                        transactionDesc: 'Payment for goods/services'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    successAlert.textContent = data.customerMessage || 'Payment initiated successfully! Check your phone.';
+                    successAlert.style.display = 'block';
+                    
+                    statusMessage.textContent = `✅ ${data.customerMessage}. Please check your phone to enter M-Pesa PIN.`;
+                    resultDiv.style.display = 'block';
+                    document.getElementById('paymentForm').reset();
+                } else {
+                    throw new Error(data.error || 'Failed to initiate payment');
+                }
+                
+            } catch (error) {
+                errorAlert.textContent = `Error: ${error.message}`;
+                errorAlert.style.display = 'block';
+                statusMessage.textContent = `❌ ${error.message}`;
+                resultDiv.style.display = 'block';
+            } finally {
+                submitBtn.disabled = false;
+                loading.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
